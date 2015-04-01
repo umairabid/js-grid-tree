@@ -1,0 +1,45 @@
+body{
+  background-color: #eee;
+}
+.row{
+  overflow:hidden;
+}
+.node.active{
+  border: 1px solid #000;
+  text-align: center;
+}
+
+.col{
+  float: left;
+  height: 20px;
+  width: 100px;
+  padding: 5px;
+  margin: 15px;
+  position: relative;
+}
+
+.vertical-bottom-line{
+  position: absolute;
+  height: 20px;
+  width: 1px;
+  bottom: -15;
+  left: 50%;
+  background-color: #000;
+}
+
+.vertical-top-line{
+  position: absolute;
+  height: 20px;
+  width: 1px;
+  top: -15px;
+  left: 50%;
+  background-color: #000;
+}
+
+.horizontal-bottom-line{
+  position: absolute;
+  height: 1px;
+  top: 44px;
+  left: 50%;
+  background-color: #000;
+}
