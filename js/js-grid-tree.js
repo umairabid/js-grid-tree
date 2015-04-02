@@ -41,6 +41,7 @@ GridTree.prototype = {
     var max_cols = leave_row.prop('children').length;
 
     var limit =  $('#row-'+1).prop('children').length - new_row.prop('children').length;
+
     for(i = 0 ; i < limit ; i++){
       this.insertColumn(new_row, true);
     }
@@ -49,14 +50,27 @@ GridTree.prototype = {
     var first_col_index = col_index - (count/2);
     row_index++;
 
+    if(leave.children.length % 2 == 0){
+      var middle_child = leave.children.length/2;
+      var j = leave.children.length-1;
+      var k = middle_child-1;
+      for(var i = j; i > k; i--){
+        leave.children[i+1] = leave.children[i];
+      }
+      leave.children[middle_child] = {'id' : "0"};
+    }
+    
     for(var i=0 ; i < leave.children.length ; i++){
       var col = $('#row-'+row_index+' #col-'+first_col_index);
       first_col_index++;
-      this.insertNode(col, leave.children[i]);
+      if(leave.children[i].id != 0){
+        this.insertNode(col, leave.children[i]);
+      }
     }
 
-    leave_col.attr('data-expanded', 'true');
     leave_col.attr('has-children', 'true');
+
+    $(this.wrapper).css({width: this.cols*150})
     this.connectNodes(this.contacts);
   },
 
@@ -69,7 +83,7 @@ GridTree.prototype = {
     $(link).attr('href', 'javascript:void(0)');
     $(link).html(leave.name);
     $(link).click(function(e){
-      if(leave.children.length > 0 && col.attr('data-expanded') != 'true'){
+      if(leave.children.length > 0 && col.attr('has-children') != 'true'){
         that.insertChildren(leave);
       }
     })
@@ -126,12 +140,12 @@ GridTree.prototype = {
       var width = secondChild.offset().left - firstChild.offset().left;
       width = width+1
       var left = (parentCol.offset().left -firstChild.offset().left);
-      console.log(parentCol.offset().left, firstChild.offset().left);
       left = left - 55;
       parentCol.append('<div style="width: '+width+'; left: '+-left+'px" class="horizontal-bottom-line"></div>');
       for (var key in parent.children){
         var child = $("#node-"+parent.children[key].id);
-        childCol = child.closest('.col')
+        childCol = child.closest('.col');
+        childCol.find(".vertical-top-line").remove();
         childCol.append('<div class="vertical-top-line"></div>');
         if(childCol.attr('has-children') == 'true')
           this.connectNodes(parent.children[key]);
